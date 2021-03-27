@@ -2,6 +2,8 @@ main();
 
 function main() {
     const canvas = document.querySelector("#roobix_cvs");
+    canvas.width = canvas.parentNode.getBoundingClientRect().width;
+    canvas.height = canvas.parentNode.getBoundingClientRect().height;
     // Initialize the GL context (WebGLRenderingContext)
     const gl = canvas.getContext("webgl");
 
