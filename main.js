@@ -30,6 +30,7 @@ function main() {
          */
         attribLocations: {
             vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
+            vertexColor: gl.getAttribLocation(shaderProgram, 'aVertexColor'),
         },
         /**
          * Uniforms are similar to JavaScript global variables. 
@@ -71,8 +72,23 @@ function initBuffers(gl) {
 
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
 
+    /**
+     * Colors
+     */
+
+    const colors = [
+        1.0, 1.0, 1.0, 1.0,    // white
+        1.0, 0.0, 0.0, 1.0,    // red
+        0.0, 1.0, 0.0, 1.0,    // green
+        0.0, 0.0, 1.0, 1.0,    // blue
+    ];
+    const colorBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+
     return {
         position: positionBuffer,
+        color: colorBuffer
     };
 }
 
@@ -137,6 +153,26 @@ function drawScene(gl, programInfo, buffers) {
             offset);
         gl.enableVertexAttribArray(
             programInfo.attribLocations.vertexPosition);
+    }
+
+    // Tell WebGL how to pull out the colors from the color buffer
+    // into the vertexColor attribute.
+    {
+        const numComponents = 4;
+        const type = gl.FLOAT;
+        const normalize = false;
+        const stride = 0;
+        const offset = 0;
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffers.color);
+        gl.vertexAttribPointer(
+            programInfo.attribLocations.vertexColor,
+            numComponents,
+            type,
+            normalize,
+            stride,
+            offset);
+        gl.enableVertexAttribArray(
+            programInfo.attribLocations.vertexColor);
     }
 
     // Tell WebGL to use our program when drawing

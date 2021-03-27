@@ -11,12 +11,16 @@
  */
 const vertexShaderSource = `
     attribute vec4 aVertexPosition;
+    attribute vec4 aVertexColor;
 
     uniform mat4 uModelViewMatrix;
     uniform mat4 uProjectionMatrix;
 
+    varying lowp vec4 vColor;
+
     void main() {
-        gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+        gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;        
+        vColor = aVertexColor;
     }
 `;
 
@@ -34,8 +38,9 @@ const vertexShaderSource = `
  * https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Adding_2D_content_to_a_WebGL_context
  */
 const fragmentShaderSource = `
+    varying lowp vec4 vColor;
     void main() {
-        gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+        gl_FragColor = vColor;
     }
 `;
 
