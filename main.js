@@ -65,43 +65,7 @@ function initBuffers(gl) {
 
     // Create an array of positions for the cube.
 
-    const positions = [
-        // Front face
-        -1.0, -1.0, 1.0,
-        1.0, -1.0, 1.0,
-        1.0, 1.0, 1.0,
-        -1.0, 1.0, 1.0,
-
-        // Back face
-        -1.0, -1.0, -1.0,
-        -1.0, 1.0, -1.0,
-        1.0, 1.0, -1.0,
-        1.0, -1.0, -1.0,
-
-        // Top face
-        -1.0, 1.0, -1.0,
-        -1.0, 1.0, 1.0,
-        1.0, 1.0, 1.0,
-        1.0, 1.0, -1.0,
-
-        // Bottom face
-        -1.0, -1.0, -1.0,
-        1.0, -1.0, -1.0,
-        1.0, -1.0, 1.0,
-        -1.0, -1.0, 1.0,
-
-        // Right face
-        1.0, -1.0, -1.0,
-        1.0, 1.0, -1.0,
-        1.0, 1.0, 1.0,
-        1.0, -1.0, 1.0,
-
-        // Left face
-        -1.0, -1.0, -1.0,
-        -1.0, -1.0, 1.0,
-        -1.0, 1.0, 1.0,
-        -1.0, 1.0, -1.0,
-    ];
+    const positions = vertices();
 
     // Create a buffer for the cube's positions.
 
@@ -129,6 +93,56 @@ function initBuffers(gl) {
         [0.0, 0.0, 1.0, 1.0],    // Bottom face: blue
         [1.0, 1.0, 0.0, 1.0],    // Right face: yellow
         [1.0, 0.0, 1.0, 1.0],    // Left face: purple
+
+        [0.5, 1.0, 1.0, 1.0],    // Front face: white
+        [1.0, 0.5, 0.0, 1.0],    // Back face: red
+        [0.0, 1.0, 0.5, 1.0],    // Top face: green
+        [0.0, 0.0, 1.0, 1.0],    // Bottom face: blue
+        [0.5, 1.0, 0.0, 1.0],    // Right face: yellow
+        [1.0, 0.5, 1.0, 1.0],    // Left face: purple
+
+        [0.5, 1.0, 1.0, 1.0],    // Front face: white
+        [1.0, 0.5, 0.0, 1.0],    // Back face: red
+        [0.0, 1.0, 0.5, 1.0],    // Top face: green
+        [0.0, 0.0, 1.0, 1.0],    // Bottom face: blue
+        [0.5, 1.0, 0.0, 1.0],    // Right face: yellow
+        [1.0, 0.5, 1.0, 1.0],    // Left face: purple
+
+        [0.5, 1.0, 1.0, 1.0],    // Front face: white
+        [1.0, 0.5, 0.0, 1.0],    // Back face: red
+        [0.0, 1.0, 0.5, 1.0],    // Top face: green
+        [0.0, 0.0, 1.0, 1.0],    // Bottom face: blue
+        [0.5, 1.0, 0.0, 1.0],    // Right face: yellow
+        [1.0, 0.5, 1.0, 1.0],    // Left face: purple
+
+        
+        [1.0, 1.0, 1.0, 1.0],    // Front face: white
+        [1.0, 0.0, 0.0, 1.0],    // Back face: red
+        [0.0, 1.0, 0.0, 1.0],    // Top face: green
+        [0.0, 0.0, 1.0, 1.0],    // Bottom face: blue
+        [1.0, 1.0, 0.0, 1.0],    // Right face: yellow
+        [1.0, 0.0, 1.0, 1.0],    // Left face: purple
+
+        [0.5, 1.0, 1.0, 1.0],    // Front face: white
+        [1.0, 0.5, 0.0, 1.0],    // Back face: red
+        [0.0, 1.0, 0.5, 1.0],    // Top face: green
+        [0.0, 0.0, 1.0, 1.0],    // Bottom face: blue
+        [0.5, 1.0, 0.0, 1.0],    // Right face: yellow
+        [1.0, 0.5, 1.0, 1.0],    // Left face: purple
+
+        [0.5, 1.0, 1.0, 1.0],    // Front face: white
+        [1.0, 0.5, 0.0, 1.0],    // Back face: red
+        [0.0, 1.0, 0.5, 1.0],    // Top face: green
+        [0.0, 0.0, 1.0, 1.0],    // Bottom face: blue
+        [0.5, 1.0, 0.0, 1.0],    // Right face: yellow
+        [1.0, 0.5, 1.0, 1.0],    // Left face: purple
+
+        [0.5, 1.0, 1.0, 1.0],    // Front face: white
+        [1.0, 0.5, 0.0, 1.0],    // Back face: red
+        [0.0, 1.0, 0.5, 1.0],    // Top face: green
+        [0.0, 0.0, 1.0, 1.0],    // Bottom face: blue
+        [0.5, 1.0, 0.0, 1.0],    // Right face: yellow
+        [1.0, 0.5, 1.0, 1.0]    // Left face: purple
     ];
 
     // Convert the array of colors into a table for all the vertices.
@@ -143,14 +157,11 @@ function initBuffers(gl) {
     gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
 
-    // Element array
-    const indexBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-
     // This array defines each face as two triangles, using the
     // indices into the vertex array to specify each triangle's
     // position.
 
+    /*
     const indices = [
         0, 1, 2, 0, 2, 3,           // front
         4, 5, 6, 4, 6, 7,           // back
@@ -159,11 +170,24 @@ function initBuffers(gl) {
         16, 17, 18, 16, 18, 19,     // right
         20, 21, 22, 20, 22, 23,     // left
     ];
+    */
+    var indices = [];
+    const templ_arr = [0, 1, 2, 0, 2, 3];
+    let counter = -4;
+    for (var i = 0; i <= positions.length / 2; ++i) {
+        const imod6 = i % 6;
+        if (imod6 == 0) {
+            counter += 4;
+        }
+        indices.push(counter + templ_arr[imod6]);
+    }
 
     // Now send the element array to GL
 
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,
-        new Uint16Array(indices), gl.STATIC_DRAW);
+    // Element array
+    const indexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
 
     return {
         position: positionBuffer,
@@ -279,7 +303,7 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
         modelViewMatrix);
 
     {
-        const vertexCount = 36;
+        const vertexCount = 288;
         const type = gl.UNSIGNED_SHORT;
         const offset = 0;
         gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
