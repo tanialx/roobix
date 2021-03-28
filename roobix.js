@@ -1,13 +1,31 @@
 class Roobix {
 
     constructor() {
-        this.vertices = this.#init_vertices();
+        this.vertices = this.#init_vertices(0.5);
         this.colors = this.#roobixFaceColors();
     }
 
-    #init_vertices = function () {
-        const w = 0.5;
-        let sub_cube_1 = [
+    #init_vertices = function (w) {
+
+        const n = 2;
+        const d = 0.01;
+
+        /**
+         * Generate NxN cube coordinates
+         * 
+         * [x, y + 2w][x + w, y + 2w][x + 2w, y + 2w]
+         * [x, y +  w][x + w, y +  w][x + 2w, y +  w]
+         * [x, y     ][x + w, y     ][x + 2w, y     ]
+         * 
+         * 1. Define front bottom left most cube coordinaete (Front-Back-Top-Bottom-Left-Right vertices)
+         * 2. Create remaining bottom cubes by increasing x of first cubes by w, 2w
+         * 3. Create middle & top cubes by increasing y of bottom cubes by w, 2w --> complete front face
+         * 4. Create middle face and back face by decreasing z coordinates of the front face by w or 2w
+         * 
+         */
+
+        // 1
+        let unit_cube = [
             // Front
             0, 0, 0,
             0, w, 0,
@@ -44,35 +62,42 @@ class Roobix {
             w, w, -w,
             w, 0, -w
         ]
-        let sub_cube_2 = [...sub_cube_1];
-        let sub_cube_3 = [...sub_cube_1];
-        let sub_cube_4 = [...sub_cube_1];
 
-        const d = 0.01;
+        // 2
 
-        for (var i = 1; i < sub_cube_1.length; i += 3) {
-            sub_cube_2[i] += w + d;
-            sub_cube_4[i] += w + d;
-        }
-        for (var i = 0; i < sub_cube_1.length; i += 3) {
-            sub_cube_3[i] += w + d;
-            sub_cube_4[i] += w + d;
+        let bottomCubes = [...unit_cube];
+
+        for (var i = 1; i < n; ++i) {
+            let nCube = [...unit_cube];
+            for (var j = 0; j < unit_cube.length; j += 3) {
+                nCube[j] += w*i + d;
+            }
+            bottomCubes = bottomCubes.concat(nCube);
         }
 
-        let sub_cube_5 = [...sub_cube_1];
-        let sub_cube_6 = [...sub_cube_2];
-        let sub_cube_7 = [...sub_cube_3];
-        let sub_cube_8 = [...sub_cube_4];
+        // 3
 
-        for (var i = 2; i < sub_cube_1.length; i += 3) {
-            sub_cube_5[i] -= w + d;
-            sub_cube_6[i] -= w + d;
-            sub_cube_7[i] -= w + d;
-            sub_cube_8[i] -= w + d;
+        let frontCubes = [...bottomCubes];
+
+        for(var i = 1; i < n; ++i) {
+            let nCube = [...bottomCubes];
+            for (var j = 1; j < bottomCubes.length; j += 3) {
+                nCube[j] += w*i + d;
+            }
+            frontCubes = frontCubes.concat(nCube);
         }
-        return sub_cube_1.concat(sub_cube_2).concat(sub_cube_3)
-            .concat(sub_cube_4).concat(sub_cube_5).concat(sub_cube_6)
-            .concat(sub_cube_7).concat(sub_cube_8);
+
+        // 4
+        let vs = [...frontCubes];
+
+        for(var i = 1; i < n; ++i) {
+            let nCube = [...frontCubes];
+            for (var j = 2; j < frontCubes.length; j += 3) {
+                nCube[j] -= w*i + d;
+            }
+            vs = vs.concat(nCube);
+        }
+        return vs;
     }
 
     #colors_arr = function () {
