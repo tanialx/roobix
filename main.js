@@ -1,6 +1,7 @@
-main();
+let cubeRotation = 0.0;
+let roobix = new Roobix();
 
-var cubeRotation = 0.0;
+main();
 
 function main() {
     const canvas = document.querySelector("#roobix_cvs");
@@ -65,7 +66,7 @@ function initBuffers(gl) {
 
     // Create an array of positions for the cube.
 
-    const positions = vertices();
+    const positions = roobix.vertices;
 
     // Create a buffer for the cube's positions.
 
@@ -86,7 +87,7 @@ function initBuffers(gl) {
      * Colors
      */
 
-    const faceColors = roobixFaceColors();
+    const faceColors = roobix.colors;
     // Convert the array of colors into a table for all the vertices.
     var colors = [];
     for (var j = 0; j < faceColors.length; ++j) {
