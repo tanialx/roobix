@@ -1,9 +1,10 @@
 class Roobix {
 
-    constructor() {
-        this.size = 2;
-        this.vertices = this.#init_vertices(0.5);
+    constructor(roobix_size) {
+        this.size = roobix_size;
+        this.vertices = this.#init_vertices(0.2);
         this.colors = this.#roobixFaceColors();
+        this.vertexCount = this.vertices.length / 3;
     }
 
     #init_vertices = function (w) {
@@ -71,7 +72,7 @@ class Roobix {
         for (var i = 1; i < n; ++i) {
             let nCube = [...unit_cube];
             for (var j = 0; j < unit_cube.length; j += 3) {
-                nCube[j] += w * i + d;
+                nCube[j] = nCube[j] + (w + d) * i;
             }
             bottomCubes = bottomCubes.concat(nCube);
         }
@@ -83,7 +84,7 @@ class Roobix {
         for (var i = 1; i < n; ++i) {
             let nCube = [...bottomCubes];
             for (var j = 1; j < bottomCubes.length; j += 3) {
-                nCube[j] += w * i + d;
+                nCube[j] = nCube[j] + (w + d) * i;
             }
             frontCubes = frontCubes.concat(nCube);
         }
@@ -94,7 +95,7 @@ class Roobix {
         for (var i = 1; i < n; ++i) {
             let nCube = [...frontCubes];
             for (var j = 2; j < frontCubes.length; j += 3) {
-                nCube[j] -= w * i + d;
+                nCube[j] = nCube[j] - (w + d) * i;
             }
             vs = vs.concat(nCube);
         }
@@ -102,19 +103,19 @@ class Roobix {
     }
 
     #colors = {
-        a1: [0.761, 0.780, 0.491, 1.0], // olive_green 
-        a2: [0.920, 0.699, 0.817, 1.0], // kobi
-        a3: [0.502, 0.729, 0.750, 1.0], // neptune
-        a4: [0.910, 0.827, 0.682, 1.0], // raffia
-        a5: [0.684, 0.662, 0.920, 1.0], // biloba_flower
-        a6: [0.593, 0.750, 0.684, 1.0], // summer_green
-        _i: [0.735, 0.750, 0.744, 1.0]  // gray
+        a1: [.761, .780, .491, 1.0], // olive_green 
+        a2: [.920, .699, .817, 1.0], // kobi
+        a3: [.502, .729, .750, 1.0], // neptune
+        a4: [.910, .827, .682, 1.0], // raffia
+        a5: [.684, .662, .920, 1.0], // biloba_flower
+        a6: [.593, .750, .684, 1.0], // summer_green
+        _i: [.2, .2, .2, 1.0]  // gray
     }
 
     #roobixFaceColors = function () {
 
         const cols = this.#colors;
-        const n = 2;
+        const n = this.size;
 
         // Initially fill all faces of rubik cube with 'inactive' color
         let fcols = [];

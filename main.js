@@ -1,5 +1,5 @@
 let cubeRotation = 0.0;
-let roobix = new Roobix();
+let roobix = new Roobix(3);
 
 main();
 
@@ -246,7 +246,7 @@ function drawScene(gl, programInfo, buffers, deltaTime) {
         modelViewMatrix);
 
     {
-        const vertexCount = 288;
+        const vertexCount = roobix.vertexCount * 3/2;
         const type = gl.UNSIGNED_SHORT;
         const offset = 0;
         gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
