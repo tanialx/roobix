@@ -1,13 +1,14 @@
 class Roobix {
 
     constructor() {
+        this.size = 2;
         this.vertices = this.#init_vertices(0.5);
         this.colors = this.#roobixFaceColors();
     }
 
     #init_vertices = function (w) {
 
-        const n = 2;
+        const n = this.size;
         const d = 0.01;
 
         /**
@@ -70,7 +71,7 @@ class Roobix {
         for (var i = 1; i < n; ++i) {
             let nCube = [...unit_cube];
             for (var j = 0; j < unit_cube.length; j += 3) {
-                nCube[j] += w*i + d;
+                nCube[j] += w * i + d;
             }
             bottomCubes = bottomCubes.concat(nCube);
         }
@@ -79,10 +80,10 @@ class Roobix {
 
         let frontCubes = [...bottomCubes];
 
-        for(var i = 1; i < n; ++i) {
+        for (var i = 1; i < n; ++i) {
             let nCube = [...bottomCubes];
             for (var j = 1; j < bottomCubes.length; j += 3) {
-                nCube[j] += w*i + d;
+                nCube[j] += w * i + d;
             }
             frontCubes = frontCubes.concat(nCube);
         }
@@ -90,89 +91,78 @@ class Roobix {
         // 4
         let vs = [...frontCubes];
 
-        for(var i = 1; i < n; ++i) {
+        for (var i = 1; i < n; ++i) {
             let nCube = [...frontCubes];
             for (var j = 2; j < frontCubes.length; j += 3) {
-                nCube[j] -= w*i + d;
+                nCube[j] -= w * i + d;
             }
             vs = vs.concat(nCube);
         }
         return vs;
     }
 
-    #colors_arr = function () {
-        return [
-            [0.2, 0.2, 0.2, 1.0],
-            [0.543, 0.876, 0.920, 1.0],
-            [0.861, 0.780, 1.00, 1.0],
-            [0.849, 0.910, 0.682, 1.0],
-            [0.950, 0.722, 0.737, 1.0],
-            [0.637, 0.910, 0.819, 1.0],
-            [0.863, 0.731, 0.870, 1.0]
-        ]
+    #colors = {
+        a1: [0.761, 0.780, 0.491, 1.0], // olive_green 
+        a2: [0.920, 0.699, 0.817, 1.0], // kobi
+        a3: [0.502, 0.729, 0.750, 1.0], // neptune
+        a4: [0.910, 0.827, 0.682, 1.0], // raffia
+        a5: [0.684, 0.662, 0.920, 1.0], // biloba_flower
+        a6: [0.593, 0.750, 0.684, 1.0], // summer_green
+        _i: [0.735, 0.750, 0.744, 1.0]  // gray
     }
 
     #roobixFaceColors = function () {
 
-        const validColors = this.#colors_arr();
+        const cols = this.#colors;
+        const n = 2;
 
-        const faceColors = [
-            validColors[1],
-            validColors[0],
-            validColors[0],
-            validColors[2],
-            validColors[3],
-            validColors[0],
+        // Initially fill all faces of rubik cube with 'inactive' color
+        let fcols = [];
+        for (let i = 0; i < n * n * n * 6; i++) {
+            fcols.push(cols._i);
+        }
 
-            validColors[1],
-            validColors[0],
-            validColors[4],
-            validColors[0],
-            validColors[3],
-            validColors[0],
+        /**
+         * Apply each color from 6 active colors (a1 -> a6) to the corresponding cubes' faces
+         */
 
-            validColors[1],
-            validColors[0],
-            validColors[0],
-            validColors[2],
-            validColors[0],
-            validColors[5],
+        // Front: Color #1
+        for (let i = 0; i < n * n; i++) {
+            fcols[i * 6] = cols.a1;
+        }
 
-            validColors[1],
-            validColors[0],
-            validColors[4],
-            validColors[0],
-            validColors[0],
-            validColors[5],
+        // Back: Color #2
+        const base_back = n * n * (n - 1) * 6;
+        for (let i = 0; i < n * n; i++) {
+            fcols[base_back + i * 6 + 1] = cols.a2;
+        }
 
-            validColors[0],
-            validColors[6],
-            validColors[0],
-            validColors[2],
-            validColors[3],
-            validColors[0],
+        // Top: Color #3
+        for (let i = 1; i <= n; i += 1) {
+            const base_top_i = n * (n * i - 1);
+            for (let j = 0; j < n; j++) {
+                fcols[(base_top_i + j) * 6 + 2] = cols.a3;
+            }
+        }
 
-            validColors[0],
-            validColors[6],
-            validColors[4],
-            validColors[0],
-            validColors[3],
-            validColors[0],
+        // Bottom: Color #4
+        for (let i = 0; i < n; i += 1) {
+            const base_bottom_i = n * n * i;
+            for (let j = 0; j < n; j++) {
+                fcols[(base_bottom_i + j) * 6 + 3] = cols.a4;
+            }
+        }
 
-            validColors[0],
-            validColors[6],
-            validColors[0],
-            validColors[2],
-            validColors[0],
-            validColors[5],
+        // Left: Color #5
+        for (let i = 0; i < n * n * n; i += n) {
+            fcols[i * 6 + 4] = cols.a5;
+        }
 
-            validColors[0],
-            validColors[6],
-            validColors[4],
-            validColors[0],
-            validColors[0],
-            validColors[5]
-        ];
-        return faceColors;
+        // Right: Color #6
+        for (let i = n - 1; i < n * n * n; i += n) {
+            fcols[i * 6 + 5] = cols.a6;
+        }
+
+        return fcols;
     }
 }
