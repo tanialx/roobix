@@ -61,7 +61,7 @@ function main() {
         mouseControl.mouseMove(e);
     }, false);
 
-    var animate = function () {
+    let animate = function () {
 
         if (!mouseControl.drag) {
             mouseControl.dX *= MouseControl.AMORTIZATION;
@@ -70,10 +70,9 @@ function main() {
             mouseControl.total_dragged_y += mouseControl.dY;
         }
 
-        var modelMat = mat4.create();
-
-        rotateY(modelMat, mouseControl.total_dragged_x);
-        rotateX(modelMat, mouseControl.total_dragged_y);
+        let modelMat = mat4.create();
+        mat4.rotateX(modelMat, modelMat, mouseControl.total_dragged_y);
+        mat4.rotateY(modelMat, modelMat, mouseControl.total_dragged_x);
 
         renderer.clear();
         renderer.rotationMat = modelMat;
