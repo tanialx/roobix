@@ -65,6 +65,20 @@ class Roobix {
             w, 0, -w
         ]
 
+        /** 
+         * Roobix r_w = w * n + d * (n - 1)
+         * Center roobix (r_w / 2, r_w / 2, -r_w / 2)
+         */
+
+        const offset = (w * n + d * (n - 1)) / 2;
+        for (let i = 0; i < unit_cube.length; i++) {
+            if (i % 3 !== 2) {
+                unit_cube[i] -= offset;
+            } else {
+                unit_cube[i] += offset;
+            }
+        }
+
         // 2
 
         let bottomCubes = [...unit_cube];
