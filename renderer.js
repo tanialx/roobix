@@ -131,10 +131,14 @@ class Renderer {
             modelViewMatrix,     // matrix to translate
             [0.00, 0.00, -4.0]);  // amount to translate
 
+        mat4.multiply(modelViewMatrix, modelViewMatrix, this.rotationMat);
+
+        /*
         mat4.rotate(modelViewMatrix,  // destination matrix
             modelViewMatrix,  // matrix to rotate
             this.rotation * .7,   // amount to rotate in radians
             this.rotationAxis);       // axis to rotate around
+        */
 
         // Tell WebGL how to pull out the positions from the position
         // buffer into the vertexPosition attribute.

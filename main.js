@@ -46,6 +46,40 @@ function main() {
         vCount: roobix.vertexCount
     }
     renderer = new Renderer(gl, programInfo, roobixData);
-    renderer.clear();
-    renderer.render();
+
+    const mouseControl = new MouseControl(canvas.width, canvas.height);
+    canvas.addEventListener("mousedown", function (e) {
+        mouseControl.mouseDown(e);
+    }, false);
+    canvas.addEventListener("mouseup", function (e) {
+        mouseControl.mouseUp(e);
+    }, false);
+    canvas.addEventListener("mouseout", function (e) {
+        mouseControl.mouseOut(e);
+    }, false);
+    canvas.addEventListener("mousemove", function (e) {
+        mouseControl.mouseMove(e);
+    }, false);
+
+    var animate = function () {
+
+        if (!mouseControl.drag) {
+            mouseControl.dX *= MouseControl.AMORTIZATION;
+            mouseControl.dY *= MouseControl.AMORTIZATION;
+            mouseControl.total_dragged_x += mouseControl.dX;
+            mouseControl.total_dragged_y += mouseControl.dY;
+        }
+
+        var modelMat = mat4.create();
+
+        rotateY(modelMat, mouseControl.total_dragged_x);
+        rotateX(modelMat, mouseControl.total_dragged_y);
+
+        renderer.clear();
+        renderer.rotationMat = modelMat;
+        renderer.render();
+
+        window.requestAnimationFrame(animate);
+    }
+    animate(0);
 }
