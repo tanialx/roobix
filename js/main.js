@@ -55,7 +55,7 @@ function main() {
         mouseControl.mouseUp(e);
     }, false);
     canvas.addEventListener("mouseout", function (e) {
-        mouseControl.mouseOut(e);
+        mouseControl.mouseUp(e);
     }, false);
     canvas.addEventListener("mousemove", function (e) {
         mouseControl.mouseMove(e);
