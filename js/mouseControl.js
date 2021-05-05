@@ -10,8 +10,8 @@ class MouseControl {
         this.dY = 0;
         this.w = w;
         this.h = h;
-        this.total_dragged_x = 0;
-        this.total_dragged_y = 0;
+        this.total_dragged_x = .5;
+        this.total_dragged_y = .5;
     }
 
     mouseDown(e) {

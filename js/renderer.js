@@ -3,10 +3,11 @@ class Renderer {
     constructor(gl, programInfo, vertexData) {
         this.gl = gl;
         this.programInfo = programInfo;
-        this.buffers = this.#initBuffers(gl, vertexData.v, vertexData.fColors);
+        this.buffers = this.initBuffers(gl, vertexData.v, vertexData.fColors);
         this.vertexCount = vertexData.vCount;
         this.rotation = 1;
         this.rotationAxis = [.0, .1, .0];
+        this.rotationMat = mat4.create()
     }
 
     clear() {
@@ -16,7 +17,7 @@ class Renderer {
         this.gl.clear( this.gl.COLOR_BUFFER_BIT);
     }
 
-    #initBuffers(gl, vertices, fColors) {
+    initBuffers(gl, vertices, fColors) {
 
         // Create an array of positions for the cube.
 
@@ -82,10 +83,10 @@ class Renderer {
     }
 
     render() {
-        this.#drawScene();
+        this.drawScene();
     }
 
-    #drawScene() {
+    drawScene() {
         const gl = this.gl;
         const programInfo = this.programInfo;
         const buffers = this.buffers;

@@ -2,12 +2,12 @@ class Roobix {
 
     constructor(roobix_size) {
         this.size = roobix_size;
-        this.vertices = this.#init_vertices(0.2);
-        this.colors = this.#roobixFaceColors();
+        this.vertices = this.init_vertices(0.2);
+        this.colors = this.roobixFaceColors();
         this.vertexCount = this.vertices.length / 3;
     }
 
-    #init_vertices = function (w) {
+    init_vertices = function (w) {
 
         const n = this.size;
         const d = 0.01;
@@ -116,7 +116,7 @@ class Roobix {
         return vs;
     }
 
-    #colors = {
+    colors = {
         a1: [0.316, 0.790, 0.648, 1.0], // green
         a2: [0.316, 0.616, 0.790, 1.0], // blue
         a3: [0.988, 0.965, 0.910, 1.0], // white
@@ -126,9 +126,9 @@ class Roobix {
         _i: [.2, .2, .2, 1.0]  // gray
     }
 
-    #roobixFaceColors = function () {
+    roobixFaceColors = function () {
 
-        const cols = this.#colors;
+        const cols = this.colors;
         const n = this.size;
 
         // Initially fill all faces of rubik cube with 'inactive' color
